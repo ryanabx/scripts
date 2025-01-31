@@ -59,8 +59,7 @@ def process_photo(file_path, dest_path):
 def filter_file(file_date, file_path, file_extension, dest_path):
     global processed_photos, not_processed_photos
     try:
-        print(file_date)
-        dest_folder = file_date[:7].replace("-", "")
+        dest_folder = file_date[:7]
         if not os.path.isdir(os.path.abspath(os.path.join(dest_path, dest_folder))):
             os.mkdir(os.path.abspath(os.path.join(dest_path, dest_folder)))
         new_photo_name = os.path.abspath(
@@ -99,14 +98,20 @@ def process_folder(folder_path, dest_path):
 
 
 def main():
+    if len(sys.argv) < 2:
+        print(f"Usage: {sys.argv[0]} <LOCAL_PATH> <DEST_PATH>")
+        return
+
     local_path = sys.argv[1]
     if local_path is None or local_path == "":
+        print(f"Usage: {sys.argv[0]} <LOCAL_PATH> <DEST_PATH>")
         return
     if not os.path.exists(os.path.abspath(local_path)):
         print(f"Error: Path {local_path} doesn't exist")
         return
     dest_path = sys.argv[2]
     if dest_path is None or dest_path == "":
+        print(f"Usage: {sys.argv[0]} <LOCAL_PATH> <DEST_PATH>")
         return
     if not os.path.exists(os.path.abspath(dest_path)):
         os.mkdir(os.path.abspath(dest_path))
