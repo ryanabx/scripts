@@ -12,14 +12,19 @@ FLATPAK_ARCH=$(flatpak --default-arch)
 
 echo "Default arch: $FLATPAK_ARCH"
 
-if flatpak list --system | grep -F "com.visualstudio.code" >/dev/null 2>&1; then
-    INSTALLATION=system
-else
+# Look for VSCode, if not installed, look for where the flathub remote is installed
+if flatpak list --user | grep -F "com.visualstudio.code" >/dev/null 2>&1; then
     INSTALLATION=user
+elif flatpak list --system | grep -F "com.visualstudio.code" >/dev/null 2>&1; then
+    INSTALLATION=system
+elif flatpak remotes | grep -F "flathub" | grep "user" >/dev/null 2>&1; then 
+    INSTALLATION=user
+elif flatpak remotes | grep -F "flathub" | grep "system" >/dev/null 2>&1; then
+    INSTALLATION=system
 fi
 
-echo "Detected Flatpak installation as $INSTALLATION. Installing vscode podman extension..."
-flatpak install --assumeyes --$INSTALLATION flathub com.visualstudio.code com.visualstudio.code.tool.podman/$FLATPAK_ARCH/24.08
+echo "Detected Flatpak installation as $INSTALLATION. Installing VScode and the Podman extension..."
+flatpak install --assumeyes --$INSTALLATION flathub com.visualstudio.code/$FLATPAK_ARCH/stable com.visualstudio.code.tool.podman/$FLATPAK_ARCH/24.08
 
 echo "Setting flatpak podman override"
 flatpak override --$INSTALLATION --filesystem=xdg-run/podman com.visualstudio.code
