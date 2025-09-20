@@ -79,3 +79,10 @@ case "$answer" in
         podman run --detach --interactive --tty --name vscode-development-container $image_answer
         ;;
 esac
+
+echo "Done! Please add this to your settings.json, or else it will look for Docker and not Podman:"
+echo "{"
+echo "    \"dev.containers.dockerPath\": \"podman-remote\","
+echo "    \"dev.containers.dockerComposePath\": \"podman-compose\","
+echo "    \"dev.containers.dockerSocketPath\": \"/var/run/podman.sock\","
+echo "}"
