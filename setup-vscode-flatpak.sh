@@ -26,15 +26,14 @@ fi
 echo "Detected Flatpak installation as $INSTALLATION. Installing VScode and the Podman extension..."
 flatpak install --assumeyes --$INSTALLATION flathub com.visualstudio.code/$FLATPAK_ARCH/stable com.visualstudio.code.tool.podman/$FLATPAK_ARCH/24.08
 
-echo "Setting flatpak podman override"
-flatpak override --$INSTALLATION --filesystem=xdg-run/podman com.visualstudio.code
+echo "Exposing the Podman socket to VSCode."
+flatpak override --user --filesystem=xdg-run/podman com.visualstudio.code
 
-echo "Enabling the podman socket for the user"
 # Check if the service is active
 if systemctl --user is-active --quiet podman.socket; then
-    echo "User podman socket is running."
+    echo "User Podman socket is already running."
 else
-    echo "User podman socket is not running. Enabling it..."
+    echo "User Podman socket is not running. Enabling it..."
     systemctl --user enable --now podman.socket
 fi
 
@@ -57,13 +56,26 @@ while :; do
 done
 
 case "$answer" in
+    F|f|Y|y)
+        echo "What image would you like to use? (Default: fedora:42)"
+        read image_answer
+        ;;
+esac
+
+case "$image_answer" in
+    "")
+        image_answer=fedora:42
+        ;;
+esac
+
+case "$answer" in
     f|F)
         echo "Force creating container 'vscode-development-container'..."
         podman container rm --force vscode-development-container
-        podman run --detach --interactive --tty --name vscode-development-container fedora:42
+        podman run --detach --interactive --tty --name vscode-development-container $image_answer
         ;;
     y|Y)
         echo "Creating container 'vscode-development-container'..."
-        podman run --detach --interactive --tty --name vscode-development-container fedora:42
+        podman run --detach --interactive --tty --name vscode-development-container $image_answer
         ;;
 esac
