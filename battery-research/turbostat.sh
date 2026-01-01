@@ -1,0 +1,1 @@
+sudo turbostat --Summary --quiet --interval 1
