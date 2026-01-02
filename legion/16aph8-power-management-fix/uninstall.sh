@@ -8,7 +8,7 @@ sudo rm -f /etc/modprobe.d/999-legion-pm-fix-temp.conf
 # Remove udev rule
 sudo rm -f /etc/udev/rules.d/999-legion-pm-fix-temp.rules
 # Remove pm auto script
-sudo rm -rf /var/lib/999-legion-pm-fix-temp/
+sudo rm -rf /usr/local/lib/999-legion-pm-fix-temp/
 # Remove systemd service
 sudo rm -f /etc/systemd/system/999-legion-pm-fix-temp.service
 

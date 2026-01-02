@@ -1,3 +1,3 @@
 #!/bin/sh
 
-kscreen-doctor output.eDP-1.mode.1
+/usr/bin/kscreen-doctor output.eDP-1.mode.1

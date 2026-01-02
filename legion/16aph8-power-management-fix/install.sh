@@ -6,7 +6,7 @@ sudo install -Dm0644 data/modprobe-config.conf /etc/modprobe.d/999-legion-pm-fix
 # Install udev rule
 sudo install -Dm0644 data/udev-rule.rules /etc/udev/rules.d/999-legion-pm-fix-temp.rules
 # Install pm auto script
-sudo install -Dm0755 data/pm-auto-script.sh /var/lib/999-legion-pm-fix-temp/set-pm-auto.sh
+sudo install -Dm0755 data/pm-auto-script.sh /usr/local/lib/999-legion-pm-fix-temp/set-pm-auto.sh
 # Install systemd service
 sudo install -Dm0644 data/pm-service.service /etc/systemd/system/999-legion-pm-fix-temp.service
 # Enable service
