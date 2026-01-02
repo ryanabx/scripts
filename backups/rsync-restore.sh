@@ -11,6 +11,14 @@
     # --dry-run \
     # --progress \
 
+# Parse directory
+if [ "$#" -ne 1 ]; then
+    echo "Usage: $0 <BACKUP_DIRECTORY>" >&2
+    echo "NOTE: Append / to your directory!" >&2
+    exit 1
+fi
+BACKUP_PATH=$1
+
 sudo rsync \
     -aAXH --numeric-ids \
     --stats \
@@ -22,4 +30,4 @@ sudo rsync \
     --exclude='.cargo/registry/**' \
     --exclude='.local/share/Trash/**' \
     --exclude='.local/share/containers/**' \
-    /run/media/rbrue/d_drive/backup-1-1/ "$HOME/"
+    "$BACKUP_PATH" "$HOME/"
