@@ -1,0 +1,11 @@
+[Unit]
+Description=Enable Nvidia GPU runtime PM
+After=dev-dri-card1.device
+BindsTo=dev-dri-card1.device
+
+[Service]
+Type=oneshot
+ExecStart=/var/lib/999-legion-pm-fix-temp/set-pm-auto.sh
+
+[Install]
+WantedBy=multi-user.target
