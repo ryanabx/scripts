@@ -11,3 +11,9 @@ These scripts have been used for me to back up my `$HOME`, and restore from it.
 ```sh
 ./rsync-restore.sh /path/to/backup/dir
 ```
+
+> **NOTE:** You may need to restore selinux labels when restoring the backup:
+
+```sh
+sudo restorecon -Rv /home/youruser
+```
