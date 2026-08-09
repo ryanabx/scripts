@@ -1,25 +1,25 @@
 #!/bin/sh
 
-# Check the runtime power state of the NVIDIA dGPU.
+# Find the DRM card associated with the NVIDIA GPU
+for card in /sys/class/drm/card[0-9]*; do
+    pci_id=$(basename "$(readlink -f "$card/device")")
 
-PCI_ID=$(
-    lspci -D |
-        awk '/NVIDIA/ && /VGA compatible controller/ { print $1; exit }'
-)
+    if lspci -s "$pci_id" | grep -qi 'NVIDIA'; then
+        drm_card=$(basename "$card")
+        break
+    fi
+done
 
-if [ -z "$PCI_ID" ]; then
-    echo "Error: Could not find an NVIDIA VGA controller."
+if [ -z "$drm_card" ]; then
+    echo "Could not find NVIDIA DRM card" >&2
     exit 1
 fi
 
-POWER_STATUS="/sys/bus/pci/devices/$PCI_ID/power/runtime_status"
+echo "NVIDIA GPU is $drm_card"
 
-if [ ! -r "$POWER_STATUS" ]; then
-    echo "Error: $POWER_STATUS does not exist or is not readable."
-    exit 1
-fi
+POWER_STATE="/sys/class/drm/$drm_card/device/power_state"
 
 while true; do
-    cat "$POWER_STATUS"
+    cat "$POWER_STATE"
     sleep 1
 done
